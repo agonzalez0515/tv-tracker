@@ -1,0 +1,22 @@
+version: "3"
+services:
+    frontend:
+        container_name: tracker_web
+        build:
+            context: ./client
+            dockerfile: Dockerfile
+        image: agonzalez0515/tracker_web
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./client:/usr/src/app
+    backend:
+        container_name: tracker_server
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+        image: agonzalez0515/tracker_server
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./server:/usr/src/app
