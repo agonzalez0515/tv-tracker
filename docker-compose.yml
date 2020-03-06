@@ -1,11 +1,20 @@
 version: "3"
 services:
+    db:
+        image: postgres
+        volumes:
+            - ./pgdata:/var/lib/postgres/data
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: "postgres"
+            POSTGRES_PASSWORD: "mysecretpassword"
     frontend:
         container_name: tracker_web
         build:
             context: ./client
             dockerfile: Dockerfile
-        image: agonzalez0515/tracker_web
+        image: tv-tracker/client
         ports:
             - "3000:3000"
         volumes:
@@ -15,8 +24,16 @@ services:
         build:
             context: ./server
             dockerfile: Dockerfile
-        image: agonzalez0515/tracker_server
+        image: tv-tracker/server
+        env_file: 
+            - ./server/.env
         ports:
             - "8000:8000"
         volumes:
             - ./server:/usr/src/app
+            - /usr/src/app/node_modules
+        links:
+            - db
+        depends_on:
+            - db
+
