@@ -1,19 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function Helloworld() {
+  const [data, setData] = useState({players: []})
   
   useEffect(() => {
-    fetch("http://localhost:8000/status")
-    .then(res => console.log(res))
+    fetch("http://localhost:8000/api?query={players{first_name}}")
+    .then(res => {
+      return res.json()
+    })
+    .then(json => {
+      setData(json.data)
+    })
     .catch (e =>  console.log(e))
-  })
+  }, [])
 
   return (
     <div>
-      <p>You clicked times</p>
-      <button >
-        Click me
-      </button>
+      { data.players.map( player => <p>{player.first_name}</p>) }
     </div>
   );
 }
