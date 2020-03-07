@@ -103,10 +103,12 @@ app.use(
     extended: false
   })
 )
+
 app.use(bodyParser.json())
 
 app.use(cors({
-  origin: 'http://localhost:3000'|| !origin
+  origin: 'http://localhost:3000'|| !origin,
+  credentials: true
 }))
 
 app.use('/api', graphqlHTTP({
