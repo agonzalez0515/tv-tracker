@@ -1,26 +1,45 @@
-import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/layout/Navbar";
+import { authState } from "./context/AuthContext";
+import Theme from "./theme/theme";
 import Landing from "./components/layout/Landing";
-import Register from "./components/auth/Register";
-import Login from "./components/auth/Login";
-
-import { AuthProvider } from './context/AuthContext';
-
+import Navbar from "./components/layout/Navbar";
+import ProtectedDashboard from "./views/Dashboard";
+import Register from "./views/Register";
+import Login from "./views/Login";
 
 function App() {
+  const { state, dispatch } = useContext(authState);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/checkToken", {
+      credentials: "include"
+    })
+      .then(res => {
+        if (res.status === 200) {
+          dispatch({ type: "login", payload: true });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [state.loggedIn, dispatch]);
+
   return (
-    <AuthProvider>
+    <Theme>
       <Router>
-        <div className="App">
+        <div>
           <Navbar />
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
+          <Switch>
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/dashboard" component={ProtectedDashboard} />
+          </Switch>
         </div>
       </Router>
-    </AuthProvider>
+    </Theme>
   );
 }
 

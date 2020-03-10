@@ -5,13 +5,12 @@ const jwt = require("jsonwebtoken");
 const db = require("../db");
 
 router.post("/register", (req, res) => {
-  console.log("req", req);
   const { email, password } = req.body;
-  console.log(password);
-  const text = "SELECT email FROM users where email=$1";
+
+  const findUserByEmail = "SELECT * FROM users where email=$1";
   const values = [email];
 
-  db.query(text, values)
+  db.query(findUserByEmail, values)
     .then(queryRes => {
       if (queryRes.rows.length) {
         return res.status(400).json({ email: "email already exists" });
@@ -31,10 +30,10 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
 
-  const text = "SELECT * FROM users where email=$1";
+  const findUserByEmail = "SELECT * FROM users where email=$1";
   const values = [email];
 
-  db.query(text, values).then(queryRes => {
+  db.query(findUserByEmail, values).then(queryRes => {
     if (queryRes.rows.length === 0) {
       return res.status(404).json({ emailnotfound: "Email not found" });
     }
@@ -45,7 +44,7 @@ router.post("/login", (req, res) => {
           id: id,
           email: email
         };
-        const token = jwt.sign(payload, "secretgoeshere", { expiresIn: "1hr" });
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1hr" });
         res.cookie("telly_tracker", token, { httpOnly: true }).sendStatus(200);
       } else {
         return res

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import RegisterForm from "./RegisterForm";
+import RegisterForm from "../components/auth/RegisterForm";
 
 function Register(props) {
   const defaultInput = {
@@ -28,14 +28,14 @@ function Register(props) {
         "Content-Type": "application/json"
       }
     })
-    .then(response => {
-      if (response.status === 200) {
-        props.history.push("/login")
-      }
-    })
-    .catch(error => {
-      console.error("Error:", error);
-    });
+      .then(response => {
+        if (response.status === 200) {
+          props.history.push("/login");
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
   };
 
   return (

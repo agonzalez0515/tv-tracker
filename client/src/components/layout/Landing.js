@@ -1,32 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Container } from "@material-ui/core";
+import cuteTv from "../../cute-tv-cropped.jpg";
 
 function Landing() {
   return (
     <Container>
-      <div>
-        <Link
-          to="/register"
-          style={{
-            width: "140px",
-            borderRadius: "3px",
-            letterSpacing: "1.5px"
-          }}>
-          Register
-        </Link>
-      </div>
-      <div>
-        <Link
-          to="/login"
-          style={{
-            width: "140px",
-            borderRadius: "3px",
-            letterSpacing: "1.5px"
-          }}>
-          Log In
-        </Link>
-      </div>
+      <h1> Track your time in front of the telly</h1>
+      <img
+        src={cuteTv}
+        style={{ width: "100%", marginTop: "64px" }}
+        alt="Old orange television against a bright mint background"
+      />
     </Container>
   );
 }
