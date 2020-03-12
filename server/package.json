@@ -7,11 +7,15 @@
     "start": "node index.js",
     "dev-docker": "nodemon",
     "dev": "env $(cat .env.local | grep -v \"#\" | xargs) nodemon",
-    "test": "jest"
+    "test": "jest",
+    "migrate": "knex migrate:latest",
+    "seed": "knex seed:run"
   },
   "author": "agonzalez0515",
   "license": "ISC",
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.3",
+    "apollo-boost": "^0.4.7",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
@@ -21,6 +25,7 @@
     "graphql": "^14.6.0",
     "join-monster": "^2.1.1",
     "jsonwebtoken": "^8.5.1",
+    "knex": "^0.20.11",
     "pg": "^7.18.2"
   },
   "devDependencies": {

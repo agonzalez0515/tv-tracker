@@ -1,8 +1,9 @@
 const express = require("express");
-const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("../db");
+
+const router = express.Router();
 
 router.post("/register", (req, res) => {
   const { email, password } = req.body;
@@ -44,8 +45,13 @@ router.post("/login", (req, res) => {
           id: id,
           email: email
         };
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1hr" });
-        res.cookie("telly_tracker", token, { httpOnly: true }).sendStatus(200);
+        const token = jwt.sign(payload, process.env.JWT_SECRET, {
+          expiresIn: "1hr"
+        });
+        res
+          .cookie("telly_tracker", token, { httpOnly: true })
+          .status(200)
+          .json({ email: email });
       } else {
         return res
           .status(400)

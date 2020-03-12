@@ -17,4 +17,24 @@ const withAuth = function(req, res, next) {
   }
 };
 
-module.exports = withAuth;
+async function isTokenValid(token) {
+  if (token) {
+    const result = new Promise((resolve, reject) => {
+      jwt.verify(token, secret, (error, decoded) => {
+        if (error) {
+          resolve({ error });
+        }
+        if (decoded) {
+          resolve({ decoded });
+        }
+      });
+    });
+    return result;
+  }
+  return { error: "No token provided" };
+}
+
+module.exports = {
+  withAuth: withAuth,
+  isTokenValid: isTokenValid
+};
