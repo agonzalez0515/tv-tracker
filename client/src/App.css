@@ -1,9 +1,18 @@
+* {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
 a {
   text-decoration: none;
+  color: black;
 }
 
 a:visited {
-  color: black;
+  color: none;
 }
 
 /* @keyframes App-logo-spin {

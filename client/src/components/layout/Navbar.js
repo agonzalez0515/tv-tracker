@@ -1,10 +1,16 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import AppBar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
+import LiveTvIcon from "@material-ui/icons/LiveTv";
+import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import NavBarLinks from "./NavBarLinks";
 
 const useStyles = makeStyles(theme => ({
+  icon: {
+    marginRight: theme.spacing(2)
+  },
   nav: {
     alignItems: "center",
     display: "flex",
@@ -12,15 +18,14 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-between",
     padding: "0 1rem",
     "& p,a": {
-      color: theme.palette.primary.main,
       fontWeight: "bold"
-    }
+    },
+    width: "100%"
   }
 }));
 
 function Navbar() {
   const classes = useStyles();
-  const history = useHistory();
 
   const handleLogOut = () => {
     fetch("http://localhost:8000/logout", {
@@ -31,26 +36,30 @@ function Navbar() {
     })
       .then(response => {
         if (response.status === 200) {
-          console.log(history);
-          if (history.location.pathname === "/") {
-            window.location.reload();
-          } else {
-            history.push("/");
-          }
+          window.location.reload();
         }
       })
       .catch(err => console.log(err));
   };
 
   return (
-    <nav className={classes.nav}>
-      <div className="title-container">
-        <Typography component="p" variant="h5">
-          <Link to="/">TELLY TRACKER</Link>
-        </Typography>
-      </div>
-      <NavBarLinks logOut={handleLogOut} />
-    </nav>
+    <AppBar position="relative">
+      <Toolbar>
+        <LiveTvIcon className={classes.icon} />
+        <nav className={classes.nav}>
+          <Typography
+            component="p"
+            variant="h6"
+            color="inherit"
+            noWrap
+            style={{ width: "50%" }}
+          >
+            <Link to="/">TELLY TRACKER</Link>
+          </Typography>
+          <NavBarLinks logOut={handleLogOut} />
+        </nav>
+      </Toolbar>
+    </AppBar>
   );
 }
 

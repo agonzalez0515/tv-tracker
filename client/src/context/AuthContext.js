@@ -1,10 +1,10 @@
 import React, { useReducer } from "react";
 
 const LOGIN = "login";
-const REDIRECT = "redirect";
+
 const initialState = {
   loggedIn: false,
-  redirect: false
+  email: ""
 };
 
 const authState = React.createContext(initialState);
@@ -16,12 +16,8 @@ const AuthProvider = ({ children }) => {
       case LOGIN:
         return {
           ...state,
-          loggedIn: action.payload
-        };
-      case REDIRECT:
-        return {
-          ...state,
-          redirect: action.payload
+          loggedIn: action.payload.loggedIn,
+          email: action.payload.email
         };
       default:
         return state;
