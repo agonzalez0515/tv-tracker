@@ -24,6 +24,14 @@ exports.seed = function(knex) {
           date_finished: "2020-03-09",
           genre: "comedy",
           user_id: 1
+        },
+        {
+          name: "pokemon",
+          date_started: "2020-02-09",
+          date_finished: "2020-03-09",
+          genre: "comedy",
+          user_id: 2,
+          time_watching: 60
         }
       ]);
     });

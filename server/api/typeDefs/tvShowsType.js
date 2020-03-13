@@ -8,7 +8,7 @@ const TvShow = new GraphQLObjectType({
     date_started: { type: GraphQLString },
     date_finished: { type: GraphQLString },
     genre: { type: GraphQLString },
-    time_spent: { type: GraphQLString }
+    time_watching: { type: GraphQLString }
   })
 });
 

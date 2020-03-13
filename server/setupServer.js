@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const { withAuth } = require("./utils/authHelpers");
+const users = require("./routes/users");
 
 const app = express();
 
@@ -19,5 +21,7 @@ app.use(
     credentials: true
   })
 );
+app.use("/users", users);
+app.use(withAuth);
 
 module.exports = app;

@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
 
 function TvShowCard({ showInfo }) {
   const classes = useStyles();
-  const { name, date_started, genre, time_spent } = showInfo;
+  const { name, date_started, genre, time_watching } = showInfo;
 
   return (
     <Grid item key={name} xs={12} sm={6} md={4}>
@@ -41,7 +41,7 @@ function TvShowCard({ showInfo }) {
             {name}
           </Typography>
           <Typography>Started Watching: {formatDate(date_started)}</Typography>
-          <Typography>Time spent watching: {time_spent || 0}</Typography>
+          <Typography>Time spent watching: {time_watching || 0}</Typography>
           <Chip size="small" label={genre} color="primary" />
         </CardContent>
         <CardActions>

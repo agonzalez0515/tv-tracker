@@ -8,9 +8,10 @@ exports.up = function(knex) {
     knex.schema.createTable("tv_shows", table => {
       table.increments("id").primary();
       table.string("name");
-      table.date("date_started");
+      table.date("date_started").defaultTo(knex.fn.now());
       table.date("date_finished");
       table.string("genre");
+      table.integer("time_watching").defaultTo(0);
       table
         .integer("user_id")
         .references("id")

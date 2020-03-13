@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 function Landing() {
   const classes = useStyles();
-  console.log("in landing");
+
   return (
     <div className={classes.heroContent}>
       <Container maxWidth="sm" className={classes.heroText}>

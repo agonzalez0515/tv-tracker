@@ -30,13 +30,15 @@ function App() {
         const res = await fetch(process.env.REACT_APP_CHECK_TOKEN_ENDPOINT, {
           credentials: "include"
         });
-        const body = await res.json();
 
-        if (body) {
-          dispatch({
-            type: "login",
-            payload: { loggedIn: true, email: body.email }
-          });
+        if (res.status === 200) {
+          const body = await res.json();
+          if (body) {
+            dispatch({
+              type: "login",
+              payload: { loggedIn: true, email: body.email }
+            });
+          }
         }
         setIsLoading(false);
       } catch (err) {
@@ -46,7 +48,7 @@ function App() {
     }
 
     fetchToken();
-  }, [loggedIn, dispatch]);
+  }, []);
 
   return (
     <Theme>
@@ -67,9 +69,6 @@ function App() {
               <PrivateRoute path="/watching">
                 <Watching />
               </PrivateRoute>
-              {/* <PrivateRoute path="/tvShows/new">
-            <TvShow />
-          </PrivateRoute> */}
             </Switch>
           </Fragment>
         )}
@@ -82,7 +81,7 @@ function PrivateRoute({ children, ...rest }) {
   const {
     state: { loggedIn }
   } = useContext(authState);
-  console.log(loggedIn);
+
   return (
     <Route
       {...rest}

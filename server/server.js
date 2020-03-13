@@ -1,7 +1,6 @@
 const graphqlHTTP = require("express-graphql");
-const { withAuth } = require("./utils/withAuth");
-const users = require("./routes/users");
-const schema = require("./schema");
+const { withAuth } = require("./utils/authHelpers");
+const schema = require("./api/schema");
 const app = require("./setupServer");
 
 // resources api
@@ -14,9 +13,8 @@ app.use(
 );
 
 // auth routes
-app.use("/users", users);
 app.get("/checkToken", withAuth, function(req, res) {
-  res.status(200).json({ email: req.email });
+  res.status(200).json({ email: req.user.email });
 });
 app.get("/logout", function(req, res) {
   res.clearCookie("telly_tracker").sendStatus(200);
