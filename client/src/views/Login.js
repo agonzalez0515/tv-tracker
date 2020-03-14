@@ -24,7 +24,7 @@ function Login() {
       password: input.password
     };
 
-    fetch(process.env.REACT_APP_LOGIN_ENDPOINT, {
+    fetch("/users/login", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {

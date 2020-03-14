@@ -5,7 +5,7 @@ const {
   GraphQLSchema
 } = require("graphql");
 const joinMonster = require("join-monster");
-const db = require("../db");
+const knex = require("../db/knex");
 const { User, TvShow } = require("./typeDefs");
 
 const QueryRoot = new GraphQLObjectType({
@@ -19,7 +19,7 @@ const QueryRoot = new GraphQLObjectType({
       },
       resolve: async (parent, args, context, resolveInfo) => {
         return joinMonster.default(resolveInfo, {}, sql => {
-          return db.query(sql);
+          return knex.raw(sql);
         });
       }
     }
@@ -38,22 +38,17 @@ const MutationRoot = new GraphQLObjectType({
         time_watching: { type: GraphQLNonNull(GraphQLString) }
       },
       resolve: async (parent, args, context, resolveInfo) => {
-        try {
-          return (
-            await db.query(
-              "INSERT INTO tv_shows (name, date_started, genre, time_watching, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-              [
-                args.name,
-                args.date_started,
-                args.genre,
-                args.time_watching,
-                context.user.id
-              ]
-            )
-          ).rows[0];
-        } catch (err) {
-          throw new Error("Failed to insert new tv show");
-        }
+        return knex("tv_shows")
+          .returning("*")
+          .insert({
+            name: args.name,
+            date_started: args.date_started,
+            genre: args.genre,
+            time_watching: args.time_watching,
+            user_id: context.user.id
+          })
+          .then(rows => rows[0])
+          .catch(err => console.log(err));
       }
     }
   })

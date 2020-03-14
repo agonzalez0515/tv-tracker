@@ -26,7 +26,7 @@ function Register(props) {
       password: input.password
     };
 
-    fetch(process.env.REACT_APP_REGISTER_ENDPOINT, {
+    fetch("/users/register", {
       method: "POST",
       body: JSON.stringify(newUser),
       headers: {

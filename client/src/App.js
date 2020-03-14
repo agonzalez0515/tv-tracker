@@ -27,7 +27,7 @@ function App() {
   useEffect(() => {
     async function fetchToken() {
       try {
-        const res = await fetch(process.env.REACT_APP_CHECK_TOKEN_ENDPOINT, {
+        const res = await fetch("/checkToken", {
           credentials: "include"
         });
 

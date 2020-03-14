@@ -28,7 +28,7 @@ function Navbar() {
   const classes = useStyles();
 
   const handleLogOut = () => {
-    fetch("http://localhost:8000/logout", {
+    fetch("/logout", {
       headers: {
         "Content-Type": "application/json"
       },

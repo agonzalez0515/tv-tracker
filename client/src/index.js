@@ -8,7 +8,7 @@ import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
 
 const client = new ApolloClient({
-  uri: "http://localhost:8000/api/",
+  uri: "/api",
   credentials: "include"
 });
 
