@@ -3,8 +3,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-const { withAuth } = require("./utils/authHelpers");
-const users = require("./routes/users");
 
 const app = express();
 
@@ -25,7 +23,5 @@ app.use(
     credentials: true
   })
 );
-app.use("/users", users);
-app.use(withAuth);
 
 module.exports = app;
