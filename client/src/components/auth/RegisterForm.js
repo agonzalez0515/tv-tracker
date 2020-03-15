@@ -27,6 +27,9 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  error: {
+    color: "red"
   }
 }));
 
@@ -42,6 +45,9 @@ export default function Register(props) {
         <Typography component="h1" variant="h5">
           Register
         </Typography>
+        <div className={classes.error}>
+          {props.errors && <p>{props.errors}</p>}
+        </div>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>

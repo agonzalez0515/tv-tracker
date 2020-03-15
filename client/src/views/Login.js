@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { authState } from "../context/AuthContext";
 import LoginForm from "../components/auth/LoginForm";
 
-function Login(props) {
+function Login() {
   const defaultInput = {
     email: "",
     password: "",
@@ -10,6 +11,7 @@ function Login(props) {
   };
   const [input, setInput] = useState(defaultInput);
   const { dispatch } = useContext(authState);
+  const history = useHistory();
 
   const handleChange = e =>
     setInput({ ...input, [e.target.id]: e.target.value });
@@ -22,7 +24,7 @@ function Login(props) {
       password: input.password
     };
 
-    fetch("http://localhost:8000/users/login", {
+    fetch("/users/login", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {
@@ -30,12 +32,13 @@ function Login(props) {
       },
       credentials: "include"
     })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch({ type: "login", payload: true });
-          console.log(props);
-          props.history.push("/");
-        }
+      .then(response => response.json())
+      .then(body => {
+        history.push("/");
+        dispatch({
+          type: "login",
+          payload: { loggedIn: true, email: body.email }
+        });
       })
       .catch(error => {
         console.error("Error:", error);

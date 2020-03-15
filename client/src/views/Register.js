@@ -6,7 +6,7 @@ function Register(props) {
     email: "",
     password: "",
     confirmPassword: "",
-    errors: {}
+    errors: ""
   };
   const [input, setInput] = useState(defaultInput);
 
@@ -16,12 +16,17 @@ function Register(props) {
   const handleSubmit = e => {
     e.preventDefault();
 
+    if (input.password !== input.confirmPassword) {
+      setInput({ ...input, errors: "Passwords do not match" });
+      return;
+    }
+
     const newUser = {
       email: input.email,
       password: input.password
     };
 
-    fetch("http://localhost:8000/users/register", {
+    fetch("/users/register", {
       method: "POST",
       body: JSON.stringify(newUser),
       headers: {
@@ -39,7 +44,11 @@ function Register(props) {
   };
 
   return (
-    <RegisterForm handleSubmit={handleSubmit} handleChange={handleChange} />
+    <RegisterForm
+      handleSubmit={handleSubmit}
+      handleChange={handleChange}
+      errors={input.errors}
+    />
   );
 }
 

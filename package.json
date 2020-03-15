@@ -7,7 +7,10 @@
     "start": "node index.js",
     "dev-docker": "nodemon",
     "dev": "env $(cat .env.local | grep -v \"#\" | xargs) nodemon",
-    "test": "jest"
+    "test": "jest",
+    "migrate": "knex migrate:latest",
+    "seed": "knex seed:run",
+    "heroku-postbuild": "cd client && yarn && yarn run build"
   },
   "author": "agonzalez0515",
   "license": "ISC",
@@ -21,11 +24,16 @@
     "graphql": "^14.6.0",
     "join-monster": "^2.1.1",
     "jsonwebtoken": "^8.5.1",
+    "knex": "^0.20.11",
     "pg": "^7.18.2"
   },
   "devDependencies": {
-    "jest": "^25.1.0",
+    "jest": "24.9.0",
     "nodemon": "^2.0.2",
     "supertest": "^4.0.2"
+  },
+  "engines": {
+    "node": "10.16.3",
+    "npm": "6.9.0"
   }
 }

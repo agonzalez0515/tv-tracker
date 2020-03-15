@@ -1,45 +1,103 @@
-import React, { useContext, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import "./App.css";
 import { authState } from "./context/AuthContext";
 import Theme from "./theme/theme";
 import Landing from "./components/layout/Landing";
 import Navbar from "./components/layout/Navbar";
-import ProtectedDashboard from "./views/Dashboard";
+import Dashboard from "./views/Dashboard";
+import Watching from "./views/Watching";
 import Register from "./views/Register";
 import Login from "./views/Login";
 
 function App() {
-  const { state, dispatch } = useContext(authState);
+  const {
+    state: { loggedIn },
+    dispatch
+  } = useContext(authState);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:8000/checkToken", {
-      credentials: "include"
-    })
-      .then(res => {
+    async function fetchToken() {
+      try {
+        const res = await fetch("/checkToken", {
+          credentials: "include"
+        });
+
         if (res.status === 200) {
-          dispatch({ type: "login", payload: true });
+          const body = await res.json();
+          if (body) {
+            dispatch({
+              type: "login",
+              payload: { loggedIn: true, email: body.email }
+            });
+          }
         }
-      })
-      .catch(err => {
+        setIsLoading(false);
+      } catch (err) {
         console.log(err);
-      });
-  }, [state.loggedIn, dispatch]);
+        setIsError(true);
+      }
+    }
+
+    fetchToken();
+  }, []);
 
   return (
     <Theme>
       <Router>
-        <div>
-          <Navbar />
-          <Switch>
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/dashboard" component={ProtectedDashboard} />
-          </Switch>
-        </div>
+        {isError && <div>Something went wrong ...</div>}
+        {isLoading ? (
+          <h1>loading </h1>
+        ) : (
+          <Fragment>
+            <Navbar />
+            <Switch>
+              <Route exact path="/" component={Landing} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <PrivateRoute path="/dashboard">
+                <Dashboard />
+              </PrivateRoute>
+              <PrivateRoute path="/watching">
+                <Watching />
+              </PrivateRoute>
+            </Switch>
+          </Fragment>
+        )}
       </Router>
     </Theme>
+  );
+}
+
+function PrivateRoute({ children, ...rest }) {
+  const {
+    state: { loggedIn }
+  } = useContext(authState);
+
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        loggedIn ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
   );
 }
 

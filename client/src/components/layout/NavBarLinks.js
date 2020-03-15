@@ -9,10 +9,16 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-between",
     width: "50%",
     "& a": {
-      color: theme.palette.primary.main,
       fontSize: "14px",
       textTransform: "uppercase"
     }
+  },
+  logOutButton: {
+    background: "none",
+    border: "none",
+    fontSize: "14px",
+    fontWeight: "bold",
+    textTransform: "uppercase"
   }
 }));
 
@@ -27,7 +33,10 @@ function NavBarLinks(props) {
       {loggedIn ? (
         <>
           <Link to="/dashboard"> Dashboard </Link>
-          <button onClick={props.logOut}> log out</button>
+          <Link to="/watching"> Watching </Link>
+          <button className={classes.logOutButton} onClick={props.logOut}>
+            log out
+          </button>
         </>
       ) : (
         <>
