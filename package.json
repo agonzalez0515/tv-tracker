@@ -7,7 +7,9 @@
     "start": "node index.js",
     "dev-docker": "nodemon",
     "dev": "env $(cat .env.local | grep -v \"#\" | xargs) nodemon",
-    "test": "jest",
+    "test": "yarn test:server && yarn test:client",
+    "test:server": "NODE_ENV=test jest /tests",
+    "test:client": "cd client && yarn install --silent && yarn test",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
     "heroku-postbuild": "cd client && yarn && yarn run build"
