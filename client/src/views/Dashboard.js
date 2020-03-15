@@ -12,15 +12,15 @@ function Dashboard() {
   const { data, loading, error } = useQuery(TOTAL_WATCHING_TIME, {
     variables: { email }
   });
-  console.log(data);
-
-  if (loading) return <CircularProgress />;
 
   const totalTime = () => {
     return data.user.tv_shows
       .map(show => parseInt(show.time_watching))
       .reduce((a, b) => a + b, 0);
   };
+
+  if (loading) return <CircularProgress />;
+
   return <h1>you've watched {totalTime()} minutes of tv</h1>;
 }
 

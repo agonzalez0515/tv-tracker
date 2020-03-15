@@ -16,9 +16,8 @@ import Register from "./views/Register";
 import Login from "./views/Login";
 
 function App() {
-  const {
-    state: { dispatch }
-  } = useContext(authState);
+  const { dispatch } = useContext(authState);
+
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 

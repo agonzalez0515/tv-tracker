@@ -28,8 +28,12 @@ function TimeSpentWatchingInput() {
         value={time}
         fullWidth
       />
-      <Button onClick={addTime}>+ 30 min</Button>
-      <Button onClick={removeTime}>- 30 min</Button>
+      <Button variant="outlined" color="secondary" onClick={addTime}>
+        + 30 min
+      </Button>
+      <Button variant="outlined" color="secondary" onClick={removeTime}>
+        - 30 min
+      </Button>
     </div>
   );
 }
