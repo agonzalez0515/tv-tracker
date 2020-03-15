@@ -1,3 +1,5 @@
+const express = require("express");
+const path = require("path");
 const graphqlHTTP = require("express-graphql");
 const { withAuth } = require("./utils/authHelpers");
 const schema = require("./api/schema");
@@ -16,6 +18,13 @@ app.get("/logout", function(req, res) {
 app.get("/status", function(req, res) {
   res.status(200).json({ status: "I'm alive!" });
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/build")));
+  app.get("*", function(req, res) {
+    res.sendFile(path.join(__dirname, "client/build", "index.html"));
+  });
+}
 
 app.use(withAuth);
 // resources api
