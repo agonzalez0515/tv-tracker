@@ -45,7 +45,7 @@ function App() {
     }
 
     fetchToken();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Theme>

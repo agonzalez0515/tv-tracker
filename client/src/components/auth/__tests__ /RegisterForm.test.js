@@ -4,10 +4,10 @@ import { render, fireEvent } from "@testing-library/react";
 import RegisterForm from "../RegisterForm";
 
 describe("Register Form", () => {
-  test("it has an email field", () => {
-    const handleChange = jest.fn();
-    const handleSubmit = jest.fn();
+  let handleChange = jest.fn();
+  let handleSubmit = jest.fn();
 
+  test("it has an email field", () => {
     const { getByLabelText } = render(
       <Router>
         <RegisterForm handleChange={handleChange} handleSubmit={handleSubmit} />
@@ -18,9 +18,6 @@ describe("Register Form", () => {
   });
 
   test("it has an password field", () => {
-    const handleChange = jest.fn();
-    const handleSubmit = jest.fn();
-
     const { getAllByLabelText } = render(
       <Router>
         <RegisterForm handleChange={handleChange} handleSubmit={handleSubmit} />
@@ -31,9 +28,6 @@ describe("Register Form", () => {
   });
 
   test("it has a confirm password field", () => {
-    const handleChange = jest.fn();
-    const handleSubmit = jest.fn();
-
     const { getByLabelText } = render(
       <Router>
         <RegisterForm handleChange={handleChange} handleSubmit={handleSubmit} />
@@ -44,9 +38,6 @@ describe("Register Form", () => {
   });
 
   test("it has a Register button", () => {
-    const handleChange = jest.fn();
-    const handleSubmit = jest.fn();
-
     const { getAllByText } = render(
       <Router>
         <RegisterForm handleChange={handleChange} handleSubmit={handleSubmit} />
@@ -58,9 +49,6 @@ describe("Register Form", () => {
   });
 
   test("it has a link to login page", () => {
-    const handleChange = jest.fn();
-    const handleSubmit = jest.fn();
-
     const { getByText } = render(
       <Router>
         <RegisterForm handleChange={handleChange} handleSubmit={handleSubmit} />
@@ -72,8 +60,6 @@ describe("Register Form", () => {
   });
 
   test("it displays an error", () => {
-    const handleChange = jest.fn();
-    const handleSubmit = jest.fn();
     const error = "this is an error";
 
     const { getByText } = render(

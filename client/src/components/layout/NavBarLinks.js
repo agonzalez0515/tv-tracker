@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { authState } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const useStyles = makeStyles(theme => ({
   navLinksContainer: {
     display: "flex",
     justifyContent: "space-between",
+    listStyleType: "none",
     width: "50%",
     "& a": {
       fontSize: "14px",
@@ -16,6 +17,7 @@ const useStyles = makeStyles(theme => ({
   logOutButton: {
     background: "none",
     border: "none",
+    cursor: "pointer",
     fontSize: "14px",
     fontWeight: "bold",
     textTransform: "uppercase"
@@ -26,25 +28,35 @@ function NavBarLinks(props) {
   const classes = useStyles();
   const {
     state: { loggedIn }
-  } = useContext(authState);
+  } = useAuth();
 
   return (
-    <div className={classes.navLinksContainer}>
+    <ul className={classes.navLinksContainer}>
       {loggedIn ? (
         <>
-          <Link to="/dashboard"> Dashboard </Link>
-          <Link to="/watching"> Watching </Link>
-          <button className={classes.logOutButton} onClick={props.logOut}>
-            log out
-          </button>
+          <li>
+            <Link to="/dashboard"> dashboard </Link>
+          </li>
+          <li>
+            <Link to="/watching"> watching </Link>
+          </li>
+          <li>
+            <button className={classes.logOutButton} onClick={props.logOut}>
+              log out
+            </button>
+          </li>
         </>
       ) : (
         <>
-          <Link to="/register"> register </Link>
-          <Link to="/login"> login </Link>
+          <li>
+            <Link to="/register"> register </Link>
+          </li>
+          <li>
+            <Link to="/login"> login </Link>
+          </li>
         </>
       )}
-    </div>
+    </ul>
   );
 }
 

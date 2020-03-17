@@ -21,6 +21,7 @@ function TimeSpentWatchingInput() {
       {error && <p>{error}</p>}
       <TextField
         id="time_watching"
+        name="time_watching"
         label="How many minutes did you watch today?"
         inputProps={{
           readOnly: true

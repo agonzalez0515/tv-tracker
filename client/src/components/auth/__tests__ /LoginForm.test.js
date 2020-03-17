@@ -3,10 +3,10 @@ import { render, fireEvent } from "@testing-library/react";
 import LoginForm from "../LoginForm";
 
 describe("Login Form", () => {
-  test("Form has an email field", () => {
-    const handleChange = jest.fn();
-    const handleSubmit = jest.fn();
+  let handleChange = jest.fn();
+  let handleSubmit = jest.fn();
 
+  test("Form has an email field", () => {
     const { getByLabelText } = render(
       <LoginForm handleChange={handleChange} handleSubmit={handleSubmit} />
     );
@@ -15,9 +15,6 @@ describe("Login Form", () => {
   });
 
   test("Form has an password field", () => {
-    const handleChange = jest.fn();
-    const handleSubmit = jest.fn();
-
     const { getByLabelText } = render(
       <LoginForm handleChange={handleChange} handleSubmit={handleSubmit} />
     );
@@ -26,14 +23,11 @@ describe("Login Form", () => {
   });
 
   test("Form has login button", () => {
-    const handleChange = jest.fn();
-    const handleSubmit = jest.fn();
-
     const { getAllByText } = render(
       <LoginForm handleChange={handleChange} handleSubmit={handleSubmit} />
     );
     const Logins = getAllByText(/Login/i);
-
+    //todo fix this using sibling selector
     expect(Logins.length).toBeGreaterThan(0);
   });
 });

@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import Typography from "@material-ui/core/Typography";
 import LiveTvIcon from "@material-ui/icons/LiveTv";
 import Toolbar from "@material-ui/core/Toolbar";
-import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import { logOut } from "../../context/actions";
+import { useAuth } from "../../context/AuthContext";
 import NavBarLinks from "./NavBarLinks";
 
 const useStyles = makeStyles(theme => ({
@@ -17,6 +19,9 @@ const useStyles = makeStyles(theme => ({
     height: "10vh",
     justifyContent: "space-between",
     padding: "0 1rem",
+    "& a": {
+      textTransform: "uppercase"
+    },
     "& p,a": {
       fontWeight: "bold"
     },
@@ -26,6 +31,7 @@ const useStyles = makeStyles(theme => ({
 
 function Navbar() {
   const classes = useStyles();
+  const { dispatch } = useAuth();
 
   const handleLogOut = () => {
     fetch("/logout", {
@@ -36,7 +42,7 @@ function Navbar() {
     })
       .then(response => {
         if (response.status === 200) {
-          window.location.reload();
+          dispatch(logOut);
         }
       })
       .catch(err => console.log(err));
@@ -45,7 +51,7 @@ function Navbar() {
   return (
     <AppBar position="relative">
       <Toolbar>
-        <LiveTvIcon className={classes.icon} />
+        <LiveTvIcon className={classes.icon} data-testid="cameraIcon" />
         <nav className={classes.nav}>
           <Typography
             component="p"
@@ -54,7 +60,7 @@ function Navbar() {
             noWrap
             style={{ width: "50%" }}
           >
-            <Link to="/">TELLY TRACKER</Link>
+            <Link to="/">telly tracker</Link>
           </Typography>
           <NavBarLinks logOut={handleLogOut} />
         </nav>

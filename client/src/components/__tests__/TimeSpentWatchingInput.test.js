@@ -7,7 +7,7 @@ describe("Time Spent Watching Input", () => {
     const { getByLabelText } = render(<TimeSpentWatchingInput />);
     const input = getByLabelText(/How many minutes/i);
 
-    expect(input.readOnly).toBe(true);
+    expect(input).toHaveAttribute("readonly");
     expect(input.value).toBe("30");
     fireEvent.change(input, { target: { value: "60" } });
     expect(input.value).toBe("30");

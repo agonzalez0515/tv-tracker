@@ -1,6 +1,5 @@
-import React, { useReducer } from "react";
-
-const LOGIN = "login";
+import React, { useReducer, useContext } from "react";
+import { LOGIN, LOGGED_OUT } from "./types";
 
 const initialState = {
   loggedIn: false,
@@ -19,6 +18,11 @@ const AuthProvider = ({ children }) => {
           loggedIn: action.payload.loggedIn,
           email: action.payload.email
         };
+      case LOGGED_OUT:
+        return {
+          ...state,
+          loggedIn: action.payload.loggedIn
+        };
       default:
         return state;
     }
@@ -27,4 +31,6 @@ const AuthProvider = ({ children }) => {
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };
 
-export { authState, AuthProvider };
+const useAuth = () => useContext(authState);
+
+export { authState, AuthProvider, useAuth };

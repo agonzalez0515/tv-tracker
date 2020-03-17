@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import { authState } from "../context/AuthContext";
 import TvShowCard from "../components/TvShowCard";
-import FormDialog from "../components/FormDialog";
+import { NewShowDialog } from "../components/NewShowDialog";
 
 const useStyles = makeStyles(theme => ({
   cardGrid: {
@@ -22,15 +22,15 @@ function Watching() {
     state: { email }
   } = useContext(authState);
 
-  const [open, setOpen] = useState(false);
+  const classes = useStyles();
+  const [isOpen, setIsOpen] = useState(false);
 
   const { data, loading, error } = useQuery(TV_SHOWS, {
     variables: { email }
   });
-  const classes = useStyles();
 
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
 
   if (loading) return <CircularProgress />;
   if (error) return <p>Error :(</p>;
@@ -40,7 +40,7 @@ function Watching() {
       <Grid container spacing={4}>
         {data.user.tv_shows.length > 0 ? (
           data.user.tv_shows.map(details => (
-            <TvShowCard showInfo={details} key={details.name} />
+            <TvShowCard showInfo={details} key={details.name + details.id} />
           ))
         ) : (
           <div>
@@ -49,22 +49,16 @@ function Watching() {
         )}
       </Grid>
       <div>
-        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        <Button variant="outlined" color="primary" onClick={handleOpen}>
           Add New Tv Show
         </Button>
-        {open && (
-          <FormDialog
-            handleClickOpen={handleClickOpen}
-            handleClose={handleClose}
-            open={open}
-          />
-        )}
+        {isOpen && <NewShowDialog handleClose={handleClose} isOpen={isOpen} />}
       </div>
     </Container>
   );
 }
 
-const TV_SHOWS = gql`
+export const TV_SHOWS = gql`
   query TvShows($email: String!) {
     user(email: $email) {
       tv_shows {
