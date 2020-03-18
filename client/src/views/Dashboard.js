@@ -1,13 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
-import { authState } from "../context/AuthContext";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { useAuth } from "../context/auth/AuthContext";
 
 function Dashboard() {
-  const {
-    state: { email }
-  } = useContext(authState);
+  const { email } = useAuth();
 
   const { data, loading, error } = useQuery(TOTAL_WATCHING_TIME, {
     variables: { email }
@@ -20,8 +18,9 @@ function Dashboard() {
   };
 
   if (loading) return <CircularProgress />;
+  if (error) return <p>{error}</p>;
 
-  return <h1>you've watched {totalTime()} minutes of tv</h1>;
+  return <h1>you have watched {totalTime()} minutes of tv</h1>;
 }
 
 export default Dashboard;

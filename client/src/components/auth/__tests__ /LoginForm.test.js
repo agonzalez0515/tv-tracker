@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import LoginForm from "../LoginForm";
 
 describe("Login Form", () => {
@@ -23,11 +23,11 @@ describe("Login Form", () => {
   });
 
   test("Form has login button", () => {
-    const { getAllByText } = render(
+    const { getByRole } = render(
       <LoginForm handleChange={handleChange} handleSubmit={handleSubmit} />
     );
-    const Logins = getAllByText(/Login/i);
-    //todo fix this using sibling selector
-    expect(Logins.length).toBeGreaterThan(0);
+    const loginButton = getByRole("button");
+
+    expect(loginButton.textContent).toBe("Login");
   });
 });

@@ -1,20 +1,34 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitForElement } from "@testing-library/react";
 import GenreInput from "../GenreInput";
 
 describe("Genre Select Input", () => {
   test("it renders without a problem", () => {
-    const { getByLabelText } = render(<GenreInput />);
-    const select = getByLabelText(/Genre/i);
+    const { getByTestId } = render(<GenreInput />);
+    const select = getByTestId("genre-input");
 
     expect(select).toBeInTheDocument();
   });
 
-  test("it displays options when clicked", () => {
-    const { getByLabelText } = render(<GenreInput />);
-    const select = getByLabelText(/Genre/i);
-    fireEvent.change(select, { target: { value: "action" } });
+  xtest("an option can be selected", async () => {
+    const { getByLabelText, getByText } = render(<GenreInput />);
 
-    expect(select.value).toBe("action");
+    const getSelectItem = (getByLabelText, getByText) => async (
+      selectLabel,
+      itemText
+    ) => {
+      const select = getByLabelText(selectLabel);
+      fireEvent.keyDown(select),
+        {
+          key: "ArrowDown",
+          code: 40
+        };
+      const option = await waitForElement(() => getByText(itemText));
+      fireEvent.click(option);
+    };
+    const selectItem = getSelectItem(getByLabelText, getByText);
+    await selectItem("Genre", "Drama");
+
+    expect(getByLabelText("Genre").value).toBe("drama");
   });
 });

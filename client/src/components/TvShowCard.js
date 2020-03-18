@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -7,7 +8,7 @@ import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core";
-import { formatDate } from "../utils/helpers";
+import { formatResponseDate } from "../utils/helpers";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -31,7 +32,9 @@ function TvShowCard({ showInfo }) {
           <Typography gutterBottom variant="h5" component="h2">
             {name}
           </Typography>
-          <Typography>Started Watching: {formatDate(date_started)}</Typography>
+          <Typography>
+            Started Watching: {formatResponseDate(date_started)}
+          </Typography>
           <Typography>Time spent watching: {time_watching}</Typography>
           <Chip size="small" label={genre} color="primary" />
         </CardContent>
@@ -45,4 +48,12 @@ function TvShowCard({ showInfo }) {
   );
 }
 
+TvShowCard.propTypes = {
+  showInfo: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    date_started: PropTypes.string.isRequired,
+    genre: PropTypes.string.isRequired,
+    time_watching: PropTypes.string.isRequired
+  })
+};
 export default TvShowCard;

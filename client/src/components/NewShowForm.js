@@ -1,14 +1,15 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import TextField from "@material-ui/core/TextField";
 import GenreInput from "./GenreInput";
 import TimeSpentWatchingInput from "./TimeSpentWatchingInput";
 
-export function NewShowForm(props) {
+export function NewShowForm({ handleSubmit, handleClose }) {
   return (
-    <form onSubmit={props.handleSubmit} data-testid="newShowForm">
+    <form onSubmit={handleSubmit} data-testid="newShowForm">
       <DialogContent>
         <TextField
           name="showName"
@@ -35,7 +36,7 @@ export function NewShowForm(props) {
         <TimeSpentWatchingInput />
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose} color="primary">
+        <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
         <Button type="submit" color="primary">
@@ -45,3 +46,8 @@ export function NewShowForm(props) {
     </form>
   );
 }
+
+NewShowForm.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired
+};

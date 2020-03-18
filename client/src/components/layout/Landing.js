@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: `url(${cuteTv})`,
     backgroundPosition: "initial",
     backgroundSize: "cover",
-    minHeight: "25rem",
+    minHeight: "100vh",
     padding: theme.spacing(8, 0, 6)
   },
   heroText: {

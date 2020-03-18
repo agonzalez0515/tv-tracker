@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
-import { authState } from "../context/AuthContext";
+import { useAuth } from "../context/auth/AuthContext";
+import { GET_TV_SHOWS } from "../api/graphqlQueries";
 import TvShowCard from "../components/TvShowCard";
-import { NewShowDialog } from "../components/NewShowDialog";
+import NewShowDialog from "../components/NewShowDialog";
 
 const useStyles = makeStyles(theme => ({
   cardGrid: {
@@ -18,21 +18,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Watching() {
-  const {
-    state: { email }
-  } = useContext(authState);
-
+  const { email } = useAuth();
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-
-  const { data, loading, error } = useQuery(TV_SHOWS, {
+  const { data, loading, error } = useQuery(GET_TV_SHOWS, {
     variables: { email }
   });
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
-  if (loading) return <CircularProgress />;
+  if (loading) return <CircularProgress data-testid="loadingState" />;
   if (error) return <p>Error :(</p>;
 
   return (
@@ -57,19 +53,5 @@ function Watching() {
     </Container>
   );
 }
-
-export const TV_SHOWS = gql`
-  query TvShows($email: String!) {
-    user(email: $email) {
-      tv_shows {
-        id
-        name
-        genre
-        date_started
-        time_watching
-      }
-    }
-  }
-`;
 
 export default Watching;

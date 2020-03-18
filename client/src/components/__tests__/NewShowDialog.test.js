@@ -1,8 +1,9 @@
 import React from "react";
 import { render, fireEvent, cleanup, wait } from "@testing-library/react";
 import { MockedProvider } from "@apollo/react-testing";
-import { AuthProvider } from "../../context/AuthContext";
-import { NewShowDialog, ADD_TV_SHOW } from "../NewShowDialog";
+import { AuthProvider } from "../../context/auth/AuthContext";
+import { ADD_TV_SHOW } from "../../api/graphqlQueries";
+import NewShowDialog from "../NewShowDialog";
 
 describe("New Tv Show Dialog", () => {
   afterEach(() => {

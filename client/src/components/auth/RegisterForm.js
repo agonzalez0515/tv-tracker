@@ -1,14 +1,15 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Register(props) {
+function RegisterForm({ errors, handleChange, handleSubmit }) {
   const classes = useStyles();
   return (
     <Container component="main" maxWidth="xs">
@@ -45,9 +46,7 @@ export default function Register(props) {
         <Typography component="h1" variant="h5">
           Register
         </Typography>
-        <div className={classes.error}>
-          {props.errors && <p>{props.errors}</p>}
-        </div>
+        <div className={classes.error}>{errors && <p>{errors}</p>}</div>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -59,7 +58,7 @@ export default function Register(props) {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                onChange={props.handleChange}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -71,7 +70,7 @@ export default function Register(props) {
                 label="Password"
                 type="password"
                 id="password"
-                onChange={props.handleChange}
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -83,7 +82,7 @@ export default function Register(props) {
                 label="Confirm Your Password"
                 type="password"
                 id="confirmPassword"
-                onChange={props.handleChange}
+                onChange={handleChange}
               />
             </Grid>
           </Grid>
@@ -93,7 +92,7 @@ export default function Register(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={props.handleSubmit}
+            onClick={handleSubmit}
           >
             Register
           </Button>
@@ -109,3 +108,11 @@ export default function Register(props) {
     </Container>
   );
 }
+
+RegisterForm.propTypes = {
+  errors: PropTypes.string,
+  handleChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired
+};
+
+export default RegisterForm;

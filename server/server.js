@@ -12,7 +12,10 @@ app.get("/checkToken", withAuth, function(req, res) {
   res.status(200).json({ email: req.user.email });
 });
 app.get("/logout", function(req, res) {
-  res.clearCookie("telly_tracker").sendStatus(200);
+  res
+    .clearCookie("telly_tracker")
+    .status(200)
+    .json("ok");
 });
 
 app.get("/status", function(req, res) {

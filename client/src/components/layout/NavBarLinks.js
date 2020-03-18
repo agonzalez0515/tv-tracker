@@ -1,9 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/auth/AuthContext";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   navLinksContainer: {
     display: "flex",
     justifyContent: "space-between",
@@ -24,15 +25,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function NavBarLinks(props) {
+function NavBarLinks({ logOut }) {
   const classes = useStyles();
-  const {
-    state: { loggedIn }
-  } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   return (
     <ul className={classes.navLinksContainer}>
-      {loggedIn ? (
+      {isLoggedIn ? (
         <>
           <li>
             <Link to="/dashboard"> dashboard </Link>
@@ -41,7 +40,7 @@ function NavBarLinks(props) {
             <Link to="/watching"> watching </Link>
           </li>
           <li>
-            <button className={classes.logOutButton} onClick={props.logOut}>
+            <button className={classes.logOutButton} onClick={logOut}>
               log out
             </button>
           </li>
@@ -59,5 +58,9 @@ function NavBarLinks(props) {
     </ul>
   );
 }
+
+NavBarLinks.propTypes = {
+  logOut: PropTypes.func.isRequired
+};
 
 export default NavBarLinks;

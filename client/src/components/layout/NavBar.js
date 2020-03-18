@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { logoutUser } from "../../api/authentication";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import LiveTvIcon from "@material-ui/icons/LiveTv";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { logOut } from "../../context/actions";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/auth/AuthContext";
 import NavBarLinks from "./NavBarLinks";
 
 const useStyles = makeStyles(theme => ({
@@ -29,21 +29,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Navbar() {
+function NavBar() {
   const classes = useStyles();
-  const { dispatch } = useAuth();
+  const { logout, setUserEmail } = useAuth();
 
   const handleLogOut = () => {
-    fetch("/logout", {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "include"
-    })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(logOut);
-        }
+    logoutUser()
+      .then(() => {
+        logout();
+        setUserEmail("");
       })
       .catch(err => console.log(err));
   };
@@ -69,4 +63,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default NavBar;

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import NativeSelect from "@material-ui/core/NativeSelect";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 function GenreInput() {
   const [genre, setGenre] = useState("");
@@ -13,23 +13,24 @@ function GenreInput() {
     <div>
       <FormControl style={{ minWidth: "120" }}>
         <InputLabel htmlFor="tv-show-genre">Genre</InputLabel>
-        <NativeSelect
+        <Select
           inputProps={{
             id: "tv-show-genre",
-            name: "genre"
+            name: "genre",
+            "data-testid": "genre-input"
           }}
           value={genre}
           onClick={handleChange}
           margin="dense"
           required
         >
-          <option value="action">Action</option>
-          <option value="sci-fi">Sci-fi</option>
-          <option value="comedy">Comedy</option>
-          <option value="drama">Drama</option>
-          <option value="horror">Horror</option>
-          <option value="rom-com">Rom-com</option>
-        </NativeSelect>
+          <MenuItem value="action">Action</MenuItem>
+          <MenuItem value="sci-fi">Sci-fi</MenuItem>
+          <MenuItem value="comedy">Comedy</MenuItem>
+          <MenuItem value="drama">Drama</MenuItem>
+          <MenuItem value="horror">Horror</MenuItem>
+          <MenuItem value="rom-com">Rom-com</MenuItem>
+        </Select>
       </FormControl>
     </div>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function LoginForm(props) {
+function LoginForm({ handleChange, handleSubmit }) {
   const classes = useStyles();
 
   return (
@@ -50,7 +51,7 @@ export default function LoginForm(props) {
             label="Email Address"
             margin="normal"
             name="email"
-            onChange={props.handleChange}
+            onChange={handleChange}
             required
             variant="outlined"
           />
@@ -61,7 +62,7 @@ export default function LoginForm(props) {
             label="Password"
             margin="normal"
             name="password"
-            onChange={props.handleChange}
+            onChange={handleChange}
             required
             type="password"
             variant="outlined"
@@ -70,7 +71,7 @@ export default function LoginForm(props) {
             className={classes.submit}
             color="primary"
             fullWidth
-            onClick={props.handleSubmit}
+            onClick={handleSubmit}
             type="button"
             variant="contained"
           >
@@ -81,3 +82,10 @@ export default function LoginForm(props) {
     </Container>
   );
 }
+
+LoginForm.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired
+};
+
+export default LoginForm;

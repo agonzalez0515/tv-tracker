@@ -1,19 +1,19 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { authState } from "../../../context/AuthContext";
+import { AuthContext } from "../../../context/auth/AuthContext";
 import NavBarLinks from "../NavBarLinks";
 
-describe("Navbar links", () => {
+describe("NavBar links", () => {
   let logOut = jest.fn();
 
   test("it displays logged out links when user is logged out", () => {
     const { getByText, queryByText } = render(
-      <authState.Provider value={{ state: { loggedIn: false } }}>
+      <AuthContext.Provider value={{ isLoggedIn: false }}>
         <Router>
-          <NavBarLinks logOut={logOut} />>
+          <NavBarLinks logOut={logOut} />
         </Router>
-      </authState.Provider>
+      </AuthContext.Provider>
     );
 
     expect(getByText(/register/i)).toBeInTheDocument();
@@ -23,11 +23,11 @@ describe("Navbar links", () => {
 
   test("it displays logged in links when user is logged in", () => {
     const { getByText, queryByText } = render(
-      <authState.Provider value={{ state: { loggedIn: true } }}>
+      <AuthContext.Provider value={{ isLoggedIn: true }}>
         <Router>
-          <NavBarLinks logOut={logOut} />>
+          <NavBarLinks logOut={logOut} />
         </Router>
-      </authState.Provider>
+      </AuthContext.Provider>
     );
 
     expect(getByText(/dashboard/i)).toBeInTheDocument();
@@ -38,11 +38,11 @@ describe("Navbar links", () => {
 
   test("it calls log out function when log out button is clicked", async () => {
     const { getByText } = render(
-      <authState.Provider value={{ state: { loggedIn: true } }}>
+      <AuthContext.Provider value={{ isLoggedIn: true }}>
         <Router>
-          <NavBarLinks logOut={logOut} />>
+          <NavBarLinks logOut={logOut} />
         </Router>
-      </authState.Provider>
+      </AuthContext.Provider>
     );
     fireEvent.click(getByText(/log out/i));
 
@@ -51,11 +51,11 @@ describe("Navbar links", () => {
 
   test("the links are all uppercase", () => {
     const { getByText } = render(
-      <authState.Provider value={{ state: { loggedIn: true } }}>
+      <AuthContext.Provider value={{ isLoggedIn: true }}>
         <Router>
-          <NavBarLinks logOut={logOut} />>
+          <NavBarLinks logOut={logOut} />
         </Router>
-      </authState.Provider>
+      </AuthContext.Provider>
     );
     const link = getByText(/dashboard/i);
 

@@ -1,4 +1,4 @@
-export function formatDate(date) {
+export function formatResponseDate(date) {
   const dateObj = new Date(parseInt(date));
   const month = dateObj.getUTCMonth() + 1;
   const day = dateObj.getUTCDate();

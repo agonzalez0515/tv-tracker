@@ -1,30 +1,40 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { useMutation } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
-import { authState } from "../context/AuthContext";
+import { useAuth } from "../context/auth/AuthContext";
+import { ADD_TV_SHOW, GET_TV_SHOWS } from "../api/graphqlQueries";
+import { makeStyles } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { TV_SHOWS } from "../views/Watching";
 import { NewShowForm } from "./NewShowForm";
-// import { updateTvShowCache } from "../api/updateTvShowsCache";
 
-export function NewShowDialog(props) {
-  const {
-    state: { email }
-  } = useContext(authState);
+const useStyles = makeStyles(() => ({
+  dialogCard: {
+    minHeight: "365px"
+  },
+  savedMessage: {
+    fontSize: "4rem",
+    textAlign: "center"
+  }
+}));
 
-  const [message, setMessage] = useState("");
+function NewShowDialog({ isOpen, handleClose }) {
+  const classes = useStyles();
+  const { email } = useAuth();
+
+  const [error, setError] = useState("");
+  const [isSaved, setIsSaved] = useState(false);
 
   function updateTvShowCache(cache, { data }) {
     const {
       user: { tv_shows }
     } = cache.readQuery({
-      query: TV_SHOWS,
+      query: GET_TV_SHOWS,
       variables: { email }
     });
     data.newTvShow.__typename = "TvShow";
     cache.writeQuery({
-      query: TV_SHOWS,
+      query: GET_TV_SHOWS,
       variables: { email },
       data: {
         user: {
@@ -41,66 +51,55 @@ export function NewShowDialog(props) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    e.persist();
-    console.log(e.currentTarget.name);
     const name = e.currentTarget.name.value;
     const dateStarted = e.currentTarget.date_started.value;
     const genre = e.currentTarget.genre.value;
-    const time = e.currentTarge.time_watching.value;
+    const time = e.currentTarget.time_watching.value;
 
     addNewTvShow({ variables: { name, dateStarted, genre, time } })
       .then(() => {
-        setMessage("Saved!");
+        setIsSaved(true);
         const timer = setTimeout(() => {
-          props.handleClose();
-        }, 1500);
+          handleClose();
+        }, 1200);
         return () => clearTimeout(timer);
       })
       .catch(() => {
-        setMessage("There was an error saving your entry. Please try again.");
+        setError("There was an error saving your entry. Please try again.");
       });
   };
 
   return (
     <div>
       <Dialog
-        open={props.isOpen}
-        onClose={props.handleClose}
+        classes={{ paper: classes.dialogCard }}
+        open={isOpen}
+        onClose={handleClose}
         aria-labelledby="form-dialog-title"
         fullWidth
       >
         <DialogTitle id="form-dialog-title">
           Add a new tv show to track!
         </DialogTitle>
-        <NewShowForm
-          handleClose={props.handleClose}
-          handleSubmit={handleSubmit}
-        />
-        {message && <p>{message}</p>}
+        {isSaved ? (
+          <p className={classes.savedMessage}>Saved!</p>
+        ) : (
+          <>
+            <NewShowForm
+              handleClose={handleClose}
+              handleSubmit={handleSubmit}
+            />
+            {error && <p>{error}</p>}
+          </>
+        )}
       </Dialog>
     </div>
   );
 }
 
-export const ADD_TV_SHOW = gql`
-  mutation addNewTvShow(
-    $name: String!
-    $dateStarted: String!
-    $genre: String!
-    $time: String!
-  ) {
-    newTvShow(
-      name: $name
-      date_started: $dateStarted
-      genre: $genre
-      time_watching: $time
-    ) {
-      id
-      name
-      genre
-      date_started
-      date_finished
-      time_watching
-    }
-  }
-`;
+NewShowDialog.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired
+};
+
+export default NewShowDialog;
