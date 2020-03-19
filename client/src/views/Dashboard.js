@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Loading from "../components/Loading";
 import { useAuth } from "../context/auth/AuthContext";
 
 function Dashboard() {
@@ -17,7 +17,7 @@ function Dashboard() {
       .reduce((a, b) => a + b, 0);
   };
 
-  if (loading) return <CircularProgress />;
+  if (loading) return <Loading />;
   if (error) return <p>{error}</p>;
 
   return <h1>you have watched {totalTime()} minutes of tv</h1>;

@@ -30,4 +30,19 @@ describe("Login Form", () => {
 
     expect(loginButton.textContent).toBe("Login");
   });
+
+  test("it displays an error", () => {
+    const error = "this is an error";
+
+    const { getByText } = render(
+      <LoginForm
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        error={error}
+      />
+    );
+    const errorText = getByText(/this is an error/i);
+
+    expect(errorText).toBeInTheDocument();
+  });
 });

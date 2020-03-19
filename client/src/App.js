@@ -6,7 +6,6 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import "./App.css";
 import { useAuth } from "./context/auth/AuthContext";
 import { checkToken } from "./api/authentication";
@@ -14,12 +13,13 @@ import NavBar from "./components/layout/NavBar";
 import Theme from "./theme/theme";
 import Dashboard from "./views/Dashboard";
 import Landing from "./components/layout/Landing";
+import Loading from "./components/Loading";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import Watching from "./views/Watching";
 
 function App() {
-  const { login, setUserEmail } = useAuth();
+  const { login, setUserEmail, isLoggedIn } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -28,43 +28,40 @@ function App() {
         login();
         setUserEmail(body.email);
       })
-      .catch(() => {});
-    setIsLoading(false);
+      .then(() => setIsLoading(false))
+      .catch(() => setIsLoading(false));
   }, [login, setUserEmail]);
+
+  if (isLoading) return <Loading />;
 
   return (
     <Theme>
       <Router>
-        {isLoading ? (
-          <CircularProgress />
-        ) : (
-          <>
-            <NavBar />
-            <Switch>
-              <Route exact path="/" component={Landing} />
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
-              <PrivateRoute path="/dashboard">
-                <Dashboard />
-              </PrivateRoute>
-              <PrivateRoute path="/watching">
-                <Watching />
-              </PrivateRoute>
-            </Switch>
-          </>
-        )}
+        <>
+          <NavBar />
+          <Switch>
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <PrivateRoute path="/dashboard" loggedIn={isLoggedIn}>
+              <Dashboard />
+            </PrivateRoute>
+            <PrivateRoute path="/watching" loggedIn={isLoggedIn}>
+              <Watching />
+            </PrivateRoute>
+          </Switch>
+        </>
       </Router>
     </Theme>
   );
 }
 
-function PrivateRoute({ children, ...rest }) {
-  const { isLoggedIn } = useAuth();
+function PrivateRoute({ children, loggedIn, ...rest }) {
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        isLoggedIn ? (
+        loggedIn ? (
           children
         ) : (
           <Redirect
@@ -80,7 +77,8 @@ function PrivateRoute({ children, ...rest }) {
 }
 
 PrivateRoute.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  loggedIn: PropTypes.bool.isRequired
 };
 
 export default App;

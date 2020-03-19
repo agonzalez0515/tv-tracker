@@ -27,7 +27,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint"
+      "pre-commit": "lint-staged"
     }
   },
   "browserslist": {
@@ -50,7 +50,11 @@
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.19.0",
     "husky": "^4.2.3",
-    "jest-fetch-mock": "^3.0.3"
+    "jest-fetch-mock": "^3.0.3",
+    "lint-staged": ">=10"
   },
-  "proxy": "http://backend:8000"
+  "proxy": "http://backend:8000",
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
+  }
 }

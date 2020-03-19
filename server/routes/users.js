@@ -34,7 +34,7 @@ router.post("/login", (req, res) => {
     .where("email", email)
     .then(rows => {
       if (rows.length === 0) {
-        return res.status(400).send("Email/password combination not found");
+        return res.status(400).json("Email/password combination not found");
       }
       const { password_digest, id, email } = rows[0];
       bcrypt.compare(password, password_digest).then(isMatch => {
