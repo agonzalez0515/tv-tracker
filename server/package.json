@@ -6,7 +6,7 @@
     "start": "node index.js",
     "dev-docker": "nodemon",
     "dev": "env $(cat .env.local | grep -v \"#\" | xargs) nodemon",
-    "test": "NODE_ENV=test jest .",
+    "test": "NODE_ENV=test jest . --detectOpenHandles --forceExit",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run"
   },

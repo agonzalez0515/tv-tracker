@@ -7,7 +7,16 @@ app.use(users);
 const request = supertest(app);
 
 describe("user endpoints", () => {
+  async function unlock() {
+    await knex.schema.hasTable("knex_migrations_lock").then(async exists => {
+      if (exists) {
+        await knex("knex_migrations_lock").update("is_locked", "0");
+      }
+    });
+  }
+
   beforeEach(function(done) {
+    unlock();
     knex.migrate.rollback().then(function() {
       knex.migrate.latest().then(function() {
         return knex.seed.run().then(function() {
@@ -18,10 +27,15 @@ describe("user endpoints", () => {
   });
 
   afterEach(function(done) {
+    unlock();
     knex.migrate.rollback().then(function() {
       done();
     });
   });
+
+  // afterAll(async () => {
+  //   await new Promise(resolve => setTimeout(() => resolve(), 500)); // avoid jest open handle error
+  // });
 
   describe("/register", () => {
     test("it returns 200 status code and email when a user is created", async () => {
@@ -73,6 +87,7 @@ describe("user endpoints", () => {
           password: "test"
         })
         .set("Accept", "application/json");
+
       const cookieHeader = res.headers["set-cookie"];
 
       expect(cookieHeader[0]).toEqual(expect.stringContaining("telly_tracker"));

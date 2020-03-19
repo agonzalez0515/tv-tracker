@@ -15,9 +15,13 @@ describe("withAuth middleware", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
   });
+
+  afterAll(async () => {
+    await new Promise(resolve => setTimeout(() => resolve(), 500)); // avoid jest open handle error
+  });
+
   test("it returns a 401 response and an error message when there is no token", async () => {
     const res = await request.get("/testRoute");
-
     expect(res.status).toBe(401);
     expect(res.body).toBe("Unauthorized: No token provided");
   });
