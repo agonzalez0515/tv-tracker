@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 function GenreInput() {
   const [genre, setGenre] = useState("");
@@ -12,12 +12,15 @@ function GenreInput() {
   return (
     <div>
       <FormControl style={{ minWidth: "120" }}>
-        <InputLabel id="tv-show-genre">Genre</InputLabel>
+        <InputLabel htmlFor="tv-show-genre">Genre</InputLabel>
         <Select
-          labelId="tv-show-genre"
-          id="genre"
+          inputProps={{
+            id: "tv-show-genre",
+            name: "genre",
+            "data-testid": "genre-input"
+          }}
           value={genre}
-          onChange={handleChange}
+          onClick={handleChange}
           margin="dense"
           required
         >

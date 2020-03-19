@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import RegisterForm from "../components/auth/RegisterForm";
+import { registerUser } from "../api/authentication";
 
-function Register(props) {
+function Register() {
   const defaultInput = {
     email: "",
     password: "",
@@ -9,6 +11,7 @@ function Register(props) {
     errors: ""
   };
   const [input, setInput] = useState(defaultInput);
+  const history = useHistory();
 
   const handleChange = e =>
     setInput({ ...input, [e.target.id]: e.target.value });
@@ -26,29 +29,21 @@ function Register(props) {
       password: input.password
     };
 
-    fetch("/users/register", {
-      method: "POST",
-      body: JSON.stringify(newUser),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => {
-        if (response.status === 200) {
-          props.history.push("/login");
-        }
+    registerUser(newUser)
+      .then(() => {
+        history.push("/login");
       })
-      .catch(error => {
-        console.error("Error:", error);
-      });
+      .catch(error => setInput({ ...input, errors: error }));
   };
 
   return (
-    <RegisterForm
-      handleSubmit={handleSubmit}
-      handleChange={handleChange}
-      errors={input.errors}
-    />
+    <div>
+      <RegisterForm
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        errors={input.errors}
+      />
+    </div>
   );
 }
 

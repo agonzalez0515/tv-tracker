@@ -12,7 +12,10 @@ app.get("/checkToken", withAuth, function(req, res) {
   res.status(200).json({ email: req.user.email });
 });
 app.get("/logout", function(req, res) {
-  res.clearCookie("telly_tracker").sendStatus(200);
+  res
+    .clearCookie("telly_tracker")
+    .status(200)
+    .json("ok");
 });
 
 app.get("/status", function(req, res) {
@@ -20,13 +23,14 @@ app.get("/status", function(req, res) {
 });
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client/build")));
+  app.use(express.static(path.join(__dirname, "../client/build")));
   app.get("*", function(req, res) {
-    res.sendFile(path.join(__dirname, "client/build", "index.html"));
+    res.sendFile(path.join(__dirname, "../client/build", "index.html"));
   });
 }
 
 app.use(withAuth);
+
 // resources api
 app.use(
   "/api",

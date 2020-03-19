@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { logoutUser } from "../../api/authentication";
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import Typography from "@material-ui/core/Typography";
 import LiveTvIcon from "@material-ui/icons/LiveTv";
 import Toolbar from "@material-ui/core/Toolbar";
-import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import { useAuth } from "../../context/auth/AuthContext";
 import NavBarLinks from "./NavBarLinks";
 
 const useStyles = makeStyles(theme => ({
@@ -17,6 +19,9 @@ const useStyles = makeStyles(theme => ({
     height: "10vh",
     justifyContent: "space-between",
     padding: "0 1rem",
+    "& a": {
+      textTransform: "uppercase"
+    },
     "& p,a": {
       fontWeight: "bold"
     },
@@ -24,20 +29,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Navbar() {
+function NavBar() {
   const classes = useStyles();
+  const { logout, setUserEmail } = useAuth();
 
   const handleLogOut = () => {
-    fetch("/logout", {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "include"
-    })
-      .then(response => {
-        if (response.status === 200) {
-          window.location.reload();
-        }
+    logoutUser()
+      .then(() => {
+        logout();
+        setUserEmail("");
       })
       .catch(err => console.log(err));
   };
@@ -45,7 +45,7 @@ function Navbar() {
   return (
     <AppBar position="relative">
       <Toolbar>
-        <LiveTvIcon className={classes.icon} />
+        <LiveTvIcon className={classes.icon} data-testid="cameraIcon" />
         <nav className={classes.nav}>
           <Typography
             component="p"
@@ -54,7 +54,7 @@ function Navbar() {
             noWrap
             style={{ width: "50%" }}
           >
-            <Link to="/">TELLY TRACKER</Link>
+            <Link to="/">telly tracker</Link>
           </Typography>
           <NavBarLinks logOut={handleLogOut} />
         </nav>
@@ -63,4 +63,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default NavBar;

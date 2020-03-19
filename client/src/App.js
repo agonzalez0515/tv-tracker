@@ -1,62 +1,45 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   Redirect
 } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import "./App.css";
-import { authState } from "./context/AuthContext";
+import { useAuth } from "./context/auth/AuthContext";
+import { checkToken } from "./api/authentication";
+import NavBar from "./components/layout/NavBar";
 import Theme from "./theme/theme";
-import Landing from "./components/layout/Landing";
-import Navbar from "./components/layout/Navbar";
 import Dashboard from "./views/Dashboard";
-import Watching from "./views/Watching";
-import Register from "./views/Register";
+import Landing from "./components/layout/Landing";
 import Login from "./views/Login";
+import Register from "./views/Register";
+import Watching from "./views/Watching";
 
 function App() {
-  const {
-    state: { dispatch }
-  } = useContext(authState);
+  const { login, setUserEmail } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    async function fetchToken() {
-      try {
-        const res = await fetch("/checkToken", {
-          credentials: "include"
-        });
-
-        if (res.status === 200) {
-          const body = await res.json();
-          if (body) {
-            dispatch({
-              type: "login",
-              payload: { loggedIn: true, email: body.email }
-            });
-          }
-        }
-        setIsLoading(false);
-      } catch (err) {
-        console.log(err);
-        setIsError(true);
-      }
-    }
-
-    fetchToken();
-  }, []);
+    checkToken()
+      .then(body => {
+        login();
+        setUserEmail(body.email);
+      })
+      .catch(() => {});
+    setIsLoading(false);
+  }, [login, setUserEmail]);
 
   return (
     <Theme>
       <Router>
-        {isError && <div>Something went wrong ...</div>}
         {isLoading ? (
-          <h1>loading </h1>
+          <CircularProgress />
         ) : (
-          <Fragment>
-            <Navbar />
+          <>
+            <NavBar />
             <Switch>
               <Route exact path="/" component={Landing} />
               <Route exact path="/register" component={Register} />
@@ -68,7 +51,7 @@ function App() {
                 <Watching />
               </PrivateRoute>
             </Switch>
-          </Fragment>
+          </>
         )}
       </Router>
     </Theme>
@@ -76,15 +59,12 @@ function App() {
 }
 
 function PrivateRoute({ children, ...rest }) {
-  const {
-    state: { loggedIn }
-  } = useContext(authState);
-
+  const { isLoggedIn } = useAuth();
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        loggedIn ? (
+        isLoggedIn ? (
           children
         ) : (
           <Redirect
@@ -98,5 +78,9 @@ function PrivateRoute({ children, ...rest }) {
     />
   );
 }
+
+PrivateRoute.propTypes = {
+  children: PropTypes.node.isRequired
+};
 
 export default App;

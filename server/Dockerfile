@@ -1,8 +1,8 @@
 FROM node:13-alpine
 
-WORKDIR /usr/src/app/
+WORKDIR /usr/src/app/server
 
-COPY package*.json ./
+COPY package*.json /usr/src/app/server/package.json
 RUN npm install
 
 COPY . .

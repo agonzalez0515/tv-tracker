@@ -13,7 +13,7 @@ router.post("/register", (req, res) => {
     .where("email", email)
     .then(rows => {
       if (rows.length) {
-        return res.status(400).json({ email: "email already exists" });
+        return res.status(400).json("Email already taken");
       } else {
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(password, salt, (err, hashedPassword) => {
@@ -34,7 +34,7 @@ router.post("/login", (req, res) => {
     .where("email", email)
     .then(rows => {
       if (rows.length === 0) {
-        return res.status(404).json({ emailnotfound: "Email not found" });
+        return res.status(400).send("Email/password combination not found");
       }
       const { password_digest, id, email } = rows[0];
       bcrypt.compare(password, password_digest).then(isMatch => {

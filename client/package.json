@@ -1,29 +1,34 @@
 {
   "name": "tv-tracker-client",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "lint": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix",
+    "eject": "react-scripts eject"
+  },
+  "author": "agonzalez0515",
+  "license": "ISC",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "apollo-boost": "^0.4.7",
     "graphql": "^14.6.0",
+    "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
   },
   "browserslist": {
     "production": [
@@ -38,7 +43,14 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "@apollo/react-testing": "^3.1.3",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
+    "husky": "^4.2.3",
+    "jest-fetch-mock": "^3.0.3"
   },
-  "proxy": "http://localhost:8000"
+  "proxy": "http://backend:8000"
 }

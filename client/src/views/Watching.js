@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
-import { authState } from "../context/AuthContext";
+import { useAuth } from "../context/auth/AuthContext";
+import { GET_TV_SHOWS } from "../api/graphqlQueries";
 import TvShowCard from "../components/TvShowCard";
-import FormDialog from "../components/FormDialog";
+import NewShowDialog from "../components/NewShowDialog";
 
 const useStyles = makeStyles(theme => ({
   cardGrid: {
@@ -18,21 +18,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Watching() {
-  const {
-    state: { email }
-  } = useContext(authState);
-
-  const [open, setOpen] = useState(false);
-
-  const { data, loading, error } = useQuery(TV_SHOWS, {
+  const { email } = useAuth();
+  const classes = useStyles();
+  const [isOpen, setIsOpen] = useState(false);
+  const { data, loading, error } = useQuery(GET_TV_SHOWS, {
     variables: { email }
   });
-  const classes = useStyles();
 
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
 
-  if (loading) return <CircularProgress />;
+  if (loading) return <CircularProgress data-testid="loadingState" />;
   if (error) return <p>Error :(</p>;
 
   return (
@@ -40,7 +36,7 @@ function Watching() {
       <Grid container spacing={4}>
         {data.user.tv_shows.length > 0 ? (
           data.user.tv_shows.map(details => (
-            <TvShowCard showInfo={details} key={details.name} />
+            <TvShowCard showInfo={details} key={details.name + details.id} />
           ))
         ) : (
           <div>
@@ -49,33 +45,13 @@ function Watching() {
         )}
       </Grid>
       <div>
-        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        <Button variant="outlined" color="primary" onClick={handleOpen}>
           Add New Tv Show
         </Button>
-        {open && (
-          <FormDialog
-            handleClickOpen={handleClickOpen}
-            handleClose={handleClose}
-            open={open}
-          />
-        )}
+        {isOpen && <NewShowDialog handleClose={handleClose} isOpen={isOpen} />}
       </div>
     </Container>
   );
 }
-
-const TV_SHOWS = gql`
-  query TvShows($email: String!) {
-    user(email: $email) {
-      tv_shows {
-        id
-        name
-        genre
-        date_started
-        time_watching
-      }
-    }
-  }
-`;
 
 export default Watching;

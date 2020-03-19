@@ -1,6 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { authState } from "../context/AuthContext";
+import { loginUser } from "../api/authentication";
+import { useAuth } from "../context/auth/AuthContext";
 import LoginForm from "../components/auth/LoginForm";
 
 function Login() {
@@ -10,7 +11,8 @@ function Login() {
     errors: {}
   };
   const [input, setInput] = useState(defaultInput);
-  const { dispatch } = useContext(authState);
+  const [error, setError] = useState(null);
+  const { login, setUserEmail } = useAuth();
   const history = useHistory();
 
   const handleChange = e =>
@@ -24,28 +26,21 @@ function Login() {
       password: input.password
     };
 
-    fetch("/users/login", {
-      method: "POST",
-      body: JSON.stringify(userData),
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "include"
-    })
-      .then(response => response.json())
+    loginUser(userData)
       .then(body => {
         history.push("/");
-        dispatch({
-          type: "login",
-          payload: { loggedIn: true, email: body.email }
-        });
+        login();
+        setUserEmail(body.email);
       })
-      .catch(error => {
-        console.error("Error:", error);
-      });
+      .catch(error => setError(`Oops, ${error}`));
   };
 
-  return <LoginForm handleChange={handleChange} handleSubmit={handleSubmit} />;
+  return (
+    <div>
+      {error && <p>{error}</p>}
+      <LoginForm handleChange={handleChange} handleSubmit={handleSubmit} />
+    </div>
+  );
 }
 
 export default Login;
