@@ -8,10 +8,9 @@ function Login() {
   const defaultInput = {
     email: "",
     password: "",
-    errors: {}
+    error: ""
   };
   const [input, setInput] = useState(defaultInput);
-  const [error, setError] = useState(null);
   const { login, setUserEmail } = useAuth();
   const history = useHistory();
 
@@ -32,13 +31,16 @@ function Login() {
         login();
         setUserEmail(body.email);
       })
-      .catch(error => setError(`Oops, ${error}`));
+      .catch(error => setInput({ ...input, error: `Oops, ${error}` }));
   };
 
   return (
     <div>
-      {error && <p>{error}</p>}
-      <LoginForm handleChange={handleChange} handleSubmit={handleSubmit} />
+      <LoginForm
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        error={input.error}
+      />
     </div>
   );
 }

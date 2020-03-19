@@ -26,10 +26,13 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  error: {
+    color: "red"
   }
 }));
 
-function LoginForm({ handleChange, handleSubmit }) {
+function LoginForm({ handleChange, handleSubmit, error }) {
   const classes = useStyles();
 
   return (
@@ -42,6 +45,7 @@ function LoginForm({ handleChange, handleSubmit }) {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
+        <div className={classes.error}>{error && <p>{error}</p>}</div>
         <form className={classes.form} noValidate>
           <TextField
             autoComplete="email"
@@ -85,7 +89,8 @@ function LoginForm({ handleChange, handleSubmit }) {
 
 LoginForm.propTypes = {
   handleChange: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  error: PropTypes.string
 };
 
 export default LoginForm;

@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { useAuth } from "../context/auth/AuthContext";
 import { GET_TV_SHOWS } from "../api/graphqlQueries";
 import TvShowCard from "../components/TvShowCard";
 import NewShowDialog from "../components/NewShowDialog";
+import Loading from "../components/Loading";
 
 const useStyles = makeStyles(theme => ({
   cardGrid: {
@@ -28,7 +28,7 @@ function Watching() {
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
-  if (loading) return <CircularProgress data-testid="loadingState" />;
+  if (loading) return <Loading />;
   if (error) return <p>Error :(</p>;
 
   return (
