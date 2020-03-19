@@ -5,6 +5,14 @@ const knex = require("../db/knex");
 
 const router = express.Router();
 
+function registerNewUser(email, password, res) {
+  knex("users")
+    .returning("email")
+    .insert({ email: email, password_digest: password })
+    .then(email => res.status(200).json({ email: email }))
+    .catch(err => console.log(err));
+}
+
 router.post("/register", (req, res) => {
   const { email, password } = req.body;
 
@@ -51,20 +59,10 @@ router.post("/login", (req, res) => {
             .status(200)
             .json({ email: email });
         } else {
-          return res
-            .status(400)
-            .json({ passwordincorrect: "Password incorrect" });
+          return res.status(400).json("Email/password combination not found");
         }
       });
     });
 });
-
-function registerNewUser(email, password, res) {
-  knex("users")
-    .returning("email")
-    .insert({ email: email, password_digest: password })
-    .then(email => res.status(200).json({ email: email }))
-    .catch(err => console.log(err));
-}
 
 module.exports = router;
