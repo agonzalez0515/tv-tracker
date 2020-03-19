@@ -18,10 +18,7 @@ app.get("/logout", function(req, res) {
     .json("ok");
 });
 
-app.get("/status", function(req, res) {
-  res.status(200).json({ status: "I'm alive!" });
-});
-
+//serving react files
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
   app.get("*", function(req, res) {
@@ -29,14 +26,12 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
+// graphql api
 app.use(withAuth);
-
-// resources api
 app.use(
   "/api",
   graphqlHTTP({
-    schema: schema,
-    graphiql: true
+    schema: schema
   })
 );
 

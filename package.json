@@ -8,8 +8,8 @@
     "install:client": "cd client && yarn",
     "build:client": "cd client && yarn build",
     "start": "cd server && node index.js",
-    "test": "yarn test:server && yarn test:client",
-    "test:server": "cd server && NODE_ENV=test jest /tests",
+    "test": "yarn test:client && yarn test:server",
+    "test:server": "cd server && NODE_ENV=test yarn test",
     "test:client": "cd client && yarn install --silent && yarn test",
     "heroku-postbuild": "yarn build:client"
   },
