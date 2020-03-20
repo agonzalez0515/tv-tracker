@@ -7,7 +7,7 @@ Docker
 ## Setup project
 
 1. git clone git@github.com:agonzalez0515/tv-tracker.git
-2. Create `.env` files in `server/` and add your variables.
+2. Create `.env` file in `server/` and add your variables.
 
 `server/.env`
 

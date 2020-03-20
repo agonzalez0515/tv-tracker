@@ -9,8 +9,8 @@
     "build:client": "cd client && yarn build",
     "start": "cd server && node index.js",
     "test": "yarn test:client && yarn test:server",
-    "test:server": "cd server && NODE_ENV=test yarn test",
-    "test:client": "cd client && yarn install --silent && yarn test",
+    "test:server": "cd server && yarn install && NODE_ENV=test yarn test",
+    "test:client": "cd client && yarn install --silent && yarn test --watchAll=false",
     "heroku-postbuild": "yarn build:client"
   },
   "author": "agonzalez0515",
