@@ -14,6 +14,15 @@ const useStyles = makeStyles(theme => ({
   cardGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8)
+  },
+  emptyTvShowGrid: {
+    fontSize: "3rem",
+    textAlign: "center"
+  },
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "center",
+    paddingTop: theme.spacing(8)
   }
 }));
 
@@ -39,12 +48,12 @@ function Watching() {
             <TvShowCard showInfo={details} key={details.name + details.id} />
           ))
         ) : (
-          <div>
-            <p>no tv shows. how about you add one?</p>
-          </div>
+          <Grid item xs={12} className={classes.emptyTvShowGrid}>
+            <p>You are not tracking any tv shows yet. Want to add one?</p>
+          </Grid>
         )}
       </Grid>
-      <div>
+      <div className={classes.buttonContainer}>
         <Button variant="outlined" color="primary" onClick={handleOpen}>
           Add New Tv Show
         </Button>

@@ -95,9 +95,7 @@ describe("Watching page", () => {
     );
 
     waitForElement(() =>
-      expect(
-        getByText(/no tv shows. how about you add one?/i)
-      ).toBeInTheDocument()
+      expect(getByText(/You're not tracking/i)).toBeInTheDocument()
     );
   });
 

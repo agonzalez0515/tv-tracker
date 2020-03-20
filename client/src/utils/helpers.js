@@ -6,3 +6,13 @@ export function formatResponseDate(date) {
 
   return month + "-" + day + "-" + year;
 }
+
+export function randomHexColor() {
+  return (
+    "#" +
+    Math.random()
+      .toString(16)
+      .slice(2, 8)
+      .toUpperCase()
+  );
+}
