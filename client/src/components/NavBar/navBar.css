@@ -1,0 +1,29 @@
+.navbar__container {
+  align-items: center;
+  background-color: lavender;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 100%;
+  padding: 20px;
+}
+
+.navbar__links-list ul {
+  margin: 1em 0 0.5em;
+  padding: 0;
+  text-align: center;
+}
+.navbar__links-list li {
+  display: inline;
+}
+.navbar__links-list a {
+  display: inline-block;
+  padding: 0.5em 1.5em;
+}
+
+@media (max-width: 414px) {
+  .navbar__container {
+    justify-content: center;
+  }
+}
