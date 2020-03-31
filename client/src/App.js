@@ -5,6 +5,7 @@ import "./App.css";
 import NavBar from "./components/NavBar/NavBar";
 import Dashboard from "./views/Dashboard";
 import Watching from "./views/Watching/Watching";
+import Register from "./views/Register/Register";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Switch>
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/watching" component={Watching} />
+            <Route exact path="/register" component={Register} />
           </Switch>
         </div>
       </Router>
